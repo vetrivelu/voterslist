@@ -4,6 +4,7 @@
 
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:voterslist/json_data.dart';
 import 'package:voterslist/model/response.dart';
 
 Voter voterFromJson(String str) => Voter.fromJson(json.decode(str));
@@ -16,6 +17,7 @@ class Voter {
   Voter(
       {required this.name,
       required this.id,
+      required this.sNo,
       this.father = '',
       this.husband = '',
       required this.door,
@@ -30,35 +32,21 @@ class Voter {
   String door;
   int age;
   int partNumber;
+  int sNo;
   bool male;
 
-  get searchArray {
-    // Map<String, dynamic> search;
-    var search = [];
-    int i, j;
-    for (i = 0; i < name.length; i++) {
-      var tempName = name.substring(0, i);
-      if (tempName.length > 2) {
-        search.add(tempName);
+  search(String searchItem) {
+    Map<String, dynamic> search = {};
+    List<String> texts = searchItem.split(" ");
+    for (var text in texts) {
+      for (var i = 0; i < text.length; i++) {
+        var tempText = text.substring(0, i).toLowerCase();
+        if (tempText.length > 2) {
+          search[tempText] = true;
+        }
       }
+      search[text.toLowerCase()] = true;
     }
-    search.add(name);
-    for (i = 0; i < father.length; i++) {
-      var tempfather = father.substring(0, i);
-      if (tempfather.length > 2) {
-        search.add(tempfather);
-      }
-    }
-
-    father.isEmpty ? doNothing() : search.add(father);
-    for (i = 0; i < husband.length; i++) {
-      var temphusband = husband.substring(0, i);
-      if (temphusband.length > 2) {
-        search.add(temphusband);
-      }
-    }
-
-    husband.isEmpty ? doNothing() : search.add(husband);
     return search;
   }
 
@@ -66,18 +54,33 @@ class Voter {
     return await voters.doc(id).set(toJson()).then((value) => Response.success("Voter added")).onError((error, stackTrace) => Response.error(error));
   }
 
+  static loadDummyData() {
+    var voters = data.map((e) => Voter.fromJson(e)).toList();
+    for (var voter in voters) {
+      voter.add().then((value) => Response.success("Added ${voter.id}"));
+    }
+  }
+
   factory Voter.fromJson(Map<String, dynamic> json) => Voter(
         name: json["name"],
         id: json["id"],
         father: json["father"],
-        husband: json["husband"],
+        husband: json["husband"] ?? '',
         door: json["door"],
+
         age: json["age"],
         male: json["male"],
         partNumber: json["partNumber"],
+        sNo: json["sNo"],
+        
+        // age: int.parse(json["age"]),
+        // male: json["male"] == "TRUE" ? true : false,
+        // partNumber: int.parse(json["partNumber"]),
+        // sNo: int.parse(json["sNo"]),
       );
 
   Map<String, dynamic> toJson() => {
+        "sNo": sNo,
         "name": name,
         "id": id,
         "father": father,
@@ -86,7 +89,8 @@ class Voter {
         "age": age,
         "partNumber": partNumber,
         "male": male,
-        "search": searchArray,
+        "searchFather": search(father),
+        "searchName": search(name),
       };
 }
 
