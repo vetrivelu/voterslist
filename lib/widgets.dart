@@ -70,7 +70,7 @@ class CustomTextBox extends StatelessWidget {
         ),
         filled: true,
         fillColor: Colors.white,
-        contentPadding: EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
+        contentPadding: const EdgeInsetsDirectional.fromSTEB(20, 24, 0, 24),
       ),
       style: const TextStyle(
         fontFamily: 'Lexend Deca',
@@ -83,7 +83,7 @@ class CustomTextBox extends StatelessWidget {
 }
 
 showFutureDialog({required BuildContext context, required Future<dynamic> future, void Function()? callback}) {
-  print("I am in future dialog");
+  // print("I am in future dialog");
   showDialog(
       context: context,
       builder: (context) {
@@ -101,11 +101,11 @@ showFutureDialog({required BuildContext context, required Future<dynamic> future
                             () {
                               Navigator.of(context).pop();
                             },
-                        child: Text("Okay"))
+                        child: const Text("Okay"))
                   ],
                 );
               }
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             });

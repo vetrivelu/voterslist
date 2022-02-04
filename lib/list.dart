@@ -7,7 +7,7 @@ import 'model/voter.dart';
 CollectionReference<Map<String, dynamic>> users = firestore.collection('Voters');
 
 class VotersList extends StatefulWidget {
-  VotersList({Key? key}) : super(key: key);
+  const VotersList({Key? key}) : super(key: key);
 
   @override
   State<VotersList> createState() => _VotersListState();
@@ -141,23 +141,23 @@ class VoterCard extends StatelessWidget {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListRow(property: "Serial Number", Value: voter.sNo.toString()),
+              child: ListRow(property: "Serial Number", value: voter.sNo.toString()),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListRow(property: "Voter ID", Value: voter.id.toString()),
+              child: ListRow(property: "Voter ID", value: voter.id.toString()),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListRow(property: "Name", Value: voter.name.toString()),
+              child: ListRow(property: "Name", value: voter.name.toString()),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListRow(property: "Father/Husband ", Value: voter.father.isEmpty ? voter.husband : voter.father),
+              child: ListRow(property: "Father/Husband ", value: voter.father.isEmpty ? voter.husband : voter.father),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: ListRow(property: "Door Number ", Value: voter.door),
+              child: ListRow(property: "Door Number ", value: voter.door),
             ),
             Table(
               // border: TableBorder.symmetric(outside: const BorderSide(color: Colors.black, width: 1.0)),
@@ -165,11 +165,11 @@ class VoterCard extends StatelessWidget {
                 TableRow(children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListRow(property: "Sex", Value: voter.male ? "Male" : "Female"),
+                    child: ListRow(property: "Sex", value: voter.male ? "Male" : "Female"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: ListRow(property: "Age", Value: voter.age.toString()),
+                    child: ListRow(property: "Age", value: voter.age.toString()),
                   ),
                 ])
               ],
@@ -182,17 +182,17 @@ class VoterCard extends StatelessWidget {
 }
 
 class ListRow extends StatelessWidget {
-  const ListRow({Key? key, required this.property, required this.Value}) : super(key: key);
+  const ListRow({Key? key, required this.property, required this.value}) : super(key: key);
 
   final String property;
-  final String Value;
+  final String value;
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(flex: 4, child: Text(property, style: const TextStyle(fontWeight: FontWeight.bold))),
-        Expanded(flex: 8, child: Text(Value))
+        Expanded(flex: 8, child: Text(value))
       ],
     );
   }

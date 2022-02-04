@@ -3,7 +3,7 @@ import 'package:voterslist/model/voter.dart';
 import 'package:voterslist/widgets.dart';
 
 class VoterAddition extends StatefulWidget {
-  VoterAddition({Key? key}) : super(key: key);
+  const VoterAddition({Key? key}) : super(key: key);
 
   @override
   State<VoterAddition> createState() => _VoterAdditionState();
