@@ -54,9 +54,10 @@ class Voter {
     return await voters.doc(id).set(toJson()).then((value) => Response.success("Voter added")).onError((error, stackTrace) => Response.error(error));
   }
 
-  static loadDummyData() {
-    var voters = data.map((e) => Voter.fromJson(e)).toList();
+  static loadDummyData() async {
+    var voters = (await getJson()).map((e) => Voter.fromJson(e)).toList();
     for (var voter in voters) {
+      print(voter.toJson());
       voter.add().then((value) => Response.success("Added ${voter.id}"));
     }
   }
@@ -72,7 +73,7 @@ class Voter {
         male: json["male"],
         partNumber: json["partNumber"],
         sNo: json["sNo"],
-        
+
         // age: int.parse(json["age"]),
         // male: json["male"] == "TRUE" ? true : false,
         // partNumber: int.parse(json["partNumber"]),

@@ -2,12 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:voterslist/widgets.dart';
 
+import 'auth/auth.dart';
 import 'model/voter.dart';
 
 CollectionReference<Map<String, dynamic>> users = firestore.collection('Voters');
 
 class VotersList extends StatefulWidget {
-  const VotersList({Key? key}) : super(key: key);
+  const VotersList({Key? key, required this.auth}) : super(key: key);
+
+  final Auth auth;
 
   @override
   State<VotersList> createState() => _VotersListState();
@@ -41,7 +44,7 @@ class _VotersListState extends State<VotersList> {
 
   List<int> getNumbers() {
     List<int> numbers = [];
-    for (var i = 1; i < 100; i++) {
+    for (var i = 90; i < 100; i++) {
       numbers.add(i);
     }
     return numbers;
@@ -60,6 +63,21 @@ class _VotersListState extends State<VotersList> {
         appBar: AppBar(
           title: const Text("Search Voter"),
           centerTitle: true,
+          backgroundColor: const Color(0xffe3100f),
+          actions: [
+            GestureDetector(
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.logout,
+                  color: Colors.white,
+                ),
+              ),
+              onTap: () {
+                widget.auth.signOut();
+              },
+            )
+          ],
         ),
         body: Column(
           children: [
@@ -106,8 +124,11 @@ class _VotersListState extends State<VotersList> {
                   var voters = docs.map((e) => Voter.fromJson(e.data() as Map<String, dynamic>)).toList();
                   return Expanded(
                     child: SingleChildScrollView(
-                      child: Column(
-                        children: voters.map((e) => VoterCard(voter: e)).toList(),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: voters.map((e) => VoterCard(voter: e)).toList(),
+                        ),
                       ),
                     ),
                   );
@@ -134,7 +155,7 @@ class VoterCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.blueGrey.shade100,
+      color: const Color(0xffe3f1ff),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -159,21 +180,14 @@ class VoterCard extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: ListRow(property: "Door Number ", value: voter.door),
             ),
-            Table(
-              // border: TableBorder.symmetric(outside: const BorderSide(color: Colors.black, width: 1.0)),
-              children: [
-                TableRow(children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListRow(property: "Sex", value: voter.male ? "Male" : "Female"),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: ListRow(property: "Age", value: voter.age.toString()),
-                  ),
-                ])
-              ],
-            )
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListRow(property: "Sex", value: voter.male ? "Male" : "Female"),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: ListRow(property: "Age", value: voter.age.toString()),
+            ),
           ],
         ),
       ),
@@ -191,8 +205,22 @@ class ListRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(flex: 4, child: Text(property, style: const TextStyle(fontWeight: FontWeight.bold))),
-        Expanded(flex: 8, child: Text(value))
+        Expanded(
+            flex: 5,
+            child: Text(property,
+                style: const TextStyle(
+                  color: Color(0xffe52422),
+                  // fontWeight: FontWeight.bold,
+                ))),
+        Expanded(
+            flex: 9,
+            child: Text(
+              value,
+              style: const TextStyle(
+                color: Color(0xff1b1464),
+                // fontWeight: FontWeight.bold,
+              ),
+            ))
       ],
     );
   }

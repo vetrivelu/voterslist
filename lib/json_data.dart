@@ -1,3 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:flutter/services.dart' show rootBundle;
+
 List<Map<String, String>> data = [
   {"partNumber": "1", "sNo": "1", "door": "2", "name": "Thangapoo", "father": "Pitchiah nadar", "id": "UPG2158046", "male": "FALSE", "age": "78"},
   {"partNumber": "1", "sNo": "2", "door": "3", "name": "Sivannandakumar", "father": "Jeyaraj", "id": "BVS2568509", "male": "TRUE", "age": "41"},
@@ -466,3 +471,13 @@ List<Map<String, String>> data = [
   {"partNumber": "1", "sNo": "255", "door": "165", "name": "Thangasamy", "father": "Periyanadar", "id": "UPG2158889", "male": "TRUE", "age": "80"},
   {"partNumber": "1", "sNo": "256", "door": "165", "name": "Pappukani", "father": "Thangasamy", "id": "BVS1381623", "male": "FALSE", "age": "73"}
 ];
+
+getJson() async {
+  var myData = json.decode(await rootBundle.loadString('assets/config/data.json'));
+  return myData["data"];
+}
+
+getJsonfromFile(File file) async {
+  var myData = json.decode(await rootBundle.loadString(await file.readAsString()));
+  return myData["data"];
+}
