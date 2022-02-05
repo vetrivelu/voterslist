@@ -42,15 +42,7 @@ class _VotersListState extends State<VotersList> {
     // print(query.toString());
   }
 
-  List<int> getNumbers() {
-    List<int> numbers = [];
-    for (var i = 90; i < 100; i++) {
-      numbers.add(i);
-    }
-    return numbers;
-  }
-
-  get partNumbers => getNumbers().map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList();
+  get partNumbers => [93, 94, 95].map((e) => DropdownMenuItem(value: e, child: Text(e.toString()))).toList();
 
   final voterId = TextEditingController();
   final father = TextEditingController();
